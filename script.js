@@ -1,10 +1,25 @@
 const alphabet26 = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
 const alphabet52 = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
+const inputBox = document.getElementById("inputBox")
 const inputDiv = document.getElementById("input")
 const outputDiv = document.getElementById("output")
+const encryptBtn = document.getElementById("encryptBtn")
 
-let testString = "I shall cross the Rubicon by mid-night."
+// let testString = "I shall cross the Rubicon by mid-night of tonight."
 const cypherShift = 4
+
+
+const handleClick = (e) => {
+  // e.preventDefault()
+
+  const userInput = inputBox.value
+  console.log("inputBox.value: ", inputBox.value)
+
+  inputDiv.textContent = userInput
+  outputDiv.textContent = useCypher(userInput)
+
+  return userInput
+}
 
 const useCypher = (string) => {
   console.log("string: ", string)
@@ -46,9 +61,6 @@ const joinArray = (string) => {
   return string.join("")
 }
 
-
-inputDiv.textContent = testString
-outputDiv.textContent = useCypher(testString)
-
+encryptBtn.addEventListener("click", handleClick)
 
 console.log("useCypher: ", useCypher(testString))
