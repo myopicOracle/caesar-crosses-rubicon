@@ -26,7 +26,13 @@ const handleClick = async () => {
   outputDiv.textContent = encrypted
   console.log("encrypted: ", encrypted)
 
-  const message = { original: userInput, encrypted: encrypted, cypher: cypherShift }
+  const message = { 
+    original: userInput, 
+    encrypted: encrypted, 
+    cypher: cypherShift,
+    timestamp: new Date().toLocaleString() // Add this line
+  }
+
   console.log("message: ", message)
   
   await postMessage(message)
@@ -189,6 +195,14 @@ function renderMessage(msg) {
   
   // Add everything to the wrapper
   wrapper.appendChild(decryptContainer);
+
+    // Add timestamp
+  const timestampP = document.createElement("div");
+  timestampP.textContent = `🕒 ${msg.timestamp || 'Just now'}`;
+  timestampP.style.fontSize = '0.8em';
+  timestampP.style.color = '#888';
+  timestampP.style.marginTop = '8px';
+  wrapper.appendChild(timestampP);
   wrapper.appendChild(resultDiv);
   
   // Add to message history
