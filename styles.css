@@ -7,6 +7,10 @@ body {
     font-family: Helvetica;
   }
 
+h1 {
+  margin-bottom: 80px;
+}
+
 h3 {
   margin-top: 4rem;
 }

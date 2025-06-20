@@ -31,7 +31,7 @@ const handleClick = async () => {
   
   await postMessage(message)
   renderMessage(message)
-  
+
   inputBox.value = ''
   inputBox.focus()  
 }
@@ -79,7 +79,10 @@ const joinArray = (string) => {
 encryptBtn.addEventListener("click", handleClick)
 
 window.addEventListener("DOMContentLoaded", async () => {
+  renderMessage({ encrypted: "TEST123", original: "TEST123", cypher: 4 })
+
   const messages = await fetchMessages()
+  console.log("Page loaded. Fetched messages:", messages)
   messages.forEach(renderMessage)
 })
 
@@ -90,25 +93,50 @@ async function fetchMessages() {
     }
   })
   const data = await res.json()
+  console.log("Fetched from JSONBin:", data)
   return data.record.messages || []
 }
 
+// Fixed with help of AI: previously overwriting instead of appending
 async function postMessage(newMsg) {
-  const currentMessages = await fetchMessages()
-  const updated = [...currentMessages, newMsg]
-
-  await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Master-Key': API_KEY
-    },
-    body: JSON.stringify({
-      record: {
+  try {
+    // First, get the current state of the bin
+    const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+      headers: { 'X-Master-Key': API_KEY }
+    });
+    const data = await res.json();
+    
+    // Get the current messages array or initialize it if it doesn't exist
+    const currentMessages = data.record?.messages || [];
+    
+    // Add the new message
+    const updated = [...currentMessages, newMsg];
+    
+    // Update the bin with the new array
+    const updateRes = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': API_KEY,
+        'X-Bin-Versioning': 'false' // This ensures we're not creating new versions
+      },
+      body: JSON.stringify({
         messages: updated
-      }
-    })
-  })
+      })
+    });
+    
+    const result = await updateRes.json();
+    console.log('Update result:', result);
+    return result;
+  } catch (error) {
+    console.error('Error in postMessage:', error);
+    throw error;
+  }
+}
+
+// check if DOM element exists
+if (!messageHistoryContainer) {
+  console.error("messageHistoryContainer not found!")
 }
 
 // **AI Generated**
