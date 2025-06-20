@@ -1,17 +1,17 @@
 const alphabet26 = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
 const alphabet52 = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
-const display = document.querySelector("#app")
+const inputDiv = document.getElementById("input")
+const outputDiv = document.getElementById("output")
 
-
-let testString = "I shall cross the Rubicon by mid-night of tonight."
+let testString = "I shall cross the Rubicon by mid-night."
 const cypherShift = 4
 
 const useCypher = (string) => {
-//   console.log("string: ", string)
+  console.log("string: ", string)
 
   const originalString = string
   const stringToArray = splitString(originalString)
-//   console.log("stringToArray: ", stringToArray)
+  console.log("stringToArray: ", stringToArray)
 
   const encryptedArray = stringToArray.map((char) => {
 
@@ -33,7 +33,7 @@ const useCypher = (string) => {
   })
   
   const encryptedString = joinArray(encryptedArray)
-//   console.log("encryptedString: ", encryptedString)
+  console.log("encryptedString: ", encryptedString)
   
   return encryptedString
 }
@@ -45,5 +45,10 @@ const splitString = (string) => {
 const joinArray = (string) => {
   return string.join("")
 }
+
+
+inputDiv.textContent = testString
+outputDiv.textContent = useCypher(testString)
+
 
 console.log("useCypher: ", useCypher(testString))
