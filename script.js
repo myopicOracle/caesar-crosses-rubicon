@@ -1,4 +1,4 @@
-const BIN_ID = "68557e9c8561e97a50283fcc"
+const BIN_ID = "6855da028a456b7966b24740"
 const API_KEY = "$2a$10$tPl24rZ5BO8f8WHPhcmtReluCVDtXnVFcW3xpWIWUF0X.hnN61lF."
 
 const nowIKnowMyABCs = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -85,8 +85,7 @@ const joinArray = (string) => {
 encryptBtn.addEventListener("click", handleClick)
 
 window.addEventListener("DOMContentLoaded", async () => {
-  renderMessage({ encrypted: "TEST123", original: "TEST123", cypher: 4 })
-
+  // renderMessage({ encrypted: "TEST123", original: "TEST123", cypher: 4 })
   const messages = await fetchMessages()
   console.log("Page loaded. Fetched messages:", messages)
   messages.forEach(renderMessage)
