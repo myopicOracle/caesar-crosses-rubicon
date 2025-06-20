@@ -17,7 +17,7 @@ const cypherShift = 4
 const handleClick = async () => {
   const userInput = inputBox.value.trim()
   if (!userInput) return
-  
+
   console.log("userInput: ", userInput)
   const encrypted = useCypher(userInput)
   console.log("encrypted: ", encrypted)
@@ -28,8 +28,12 @@ const handleClick = async () => {
 
   const message = { original: userInput, encrypted: encrypted, cypher: cypherShift }
   console.log("message: ", message)
+  
   await postMessage(message)
   renderMessage(message)
+  
+  inputBox.value = ''
+  inputBox.focus()  
 }
 
 const useCypher = (string) => {
