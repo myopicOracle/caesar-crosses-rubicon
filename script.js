@@ -8,18 +8,16 @@ const inputDiv = document.getElementById("input")
 const outputDiv = document.getElementById("output")
 const encryptBtn = document.getElementById("encryptBtn")
 
-// const messageHistoryContainer = document.createElement("div")
 const messageHistoryContainer = document.getElementById("messageHistoryContainer")
-messageHistoryContainer.style.border = "2px solid red"
-messageHistoryContainer.style.minWidth = "100px"
-messageHistoryContainer.style.minHeight = "50px"
-messageHistoryContainer.style.backgroundColor = "rgba(255, 0, 0, 0.1)"
-// document.body.appendChild(messageHistoryContainer)
 
+////////////////////////////////////////////////// 
 const cypherShift = 4
+////////////////////////////////////////////////// 
 
 const handleClick = async () => {
-  const userInput = inputBox.value
+  const userInput = inputBox.value.trim()
+  if (!userInput) return
+  
   console.log("userInput: ", userInput)
   const encrypted = useCypher(userInput)
   console.log("encrypted: ", encrypted)
@@ -109,18 +107,76 @@ async function postMessage(newMsg) {
   })
 }
 
+// **AI Generated**
 function renderMessage(msg) {
-  const wrapper = document.createElement("div")
-  wrapper.style.marginBottom = "8px"
+  const wrapper = document.createElement("div");
+  wrapper.style.marginBottom = "16px";
+  wrapper.style.padding = "12px";
+  wrapper.style.border = "1px solid #eee";
+  wrapper.style.borderRadius = "4px";
 
-  // const originalP = document.createElement("p")
-  // originalP.textContent = "Original: " + msg.original
+  // Encrypted message display
+  const encryptedP = document.createElement("p");
+  encryptedP.textContent = "🔒 " + msg.encrypted;
+  wrapper.appendChild(encryptedP);
 
-  const encryptedP = document.createElement("p")
-  encryptedP.textContent = "Encrypted: " + msg.encrypted
+  // Decryption UI
+  const decryptContainer = document.createElement("div");
+  decryptContainer.className = "decrypt-container";
 
-  // wrapper.appendChild(originalP)
-  wrapper.appendChild(encryptedP)
+  // Add password input for shift value
+  const input = document.createElement("input");
+  input.type = "password";  // Using password type to hide the shift value
+  input.className = "decrypt-input";
+  input.placeholder = "Enter shift #";
+  input.min = "1";
+  input.max = "25";
 
-  messageHistoryContainer.appendChild(wrapper)
+  const decryptBtn = document.createElement("button");
+  decryptBtn.className = "decrypt-btn";
+  decryptBtn.textContent = "Decrypt";
+
+  const resultDiv = document.createElement("div");
+  resultDiv.className = "decrypted-message";
+
+  decryptBtn.addEventListener("click", () => {
+      const shift = parseInt(input.value);
+      if (shift === cypherShift) {
+          resultDiv.textContent = `🔓 ${msg.original || "No original message found"}`;
+          resultDiv.style.display = "block";
+      } else {
+          resultDiv.textContent = "Incorrect shift value!";
+          resultDiv.style.display = "block";
+          resultDiv.style.borderLeftColor = "#f44336";
+      }
+  });
+
+  // Add input and button to container
+  decryptContainer.appendChild(input);
+  decryptContainer.appendChild(decryptBtn);
+  
+  // Add everything to the wrapper
+  wrapper.appendChild(decryptContainer);
+  wrapper.appendChild(resultDiv);
+  
+  // Add to message history
+  messageHistoryContainer.appendChild(wrapper);
 }
+
+
+// Version 1.0 - NO DECRYPT
+// function renderMessage(msg) {
+//   const wrapper = document.createElement("div")
+//   wrapper.style.marginBottom = "8px"
+
+//   // const originalP = document.createElement("p")
+//   // originalP.textContent = "Original: " + msg.original
+
+//   const encryptedP = document.createElement("p")
+//   encryptedP.textContent = "Encrypted Message: " + msg.encrypted
+
+//   // wrapper.appendChild(originalP)
+//   wrapper.appendChild(encryptedP)
+
+//   messageHistoryContainer.appendChild(wrapper)
+// }
